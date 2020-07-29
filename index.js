@@ -4,7 +4,8 @@ const genres = require('./routers/genres');
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/vidly')
+mongoose.connect('mongodb://localhost/vidly',
+   { useNewUrlParser: true, useUnifiedTopology: true })
    .then(() => console.log('DB connected'))
    .catch((error) => console.log("DB error", error))
 
@@ -13,7 +14,7 @@ mongoose.connect('mongodb://localhost/vidly')
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
-app.use('api/genres', genres)
+app.use('/api/genres', genres)
 
 app.get('/', (req, res) => {
    res.send("welcome to my web page");
