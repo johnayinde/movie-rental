@@ -12,11 +12,5 @@ const genreSchema = new Schema({
 
 const Genres = mongoose.model('Genre', genreSchema);
 
-// const genre = new Genres({
-//    name: "action"
-// })
-// genre.save().then(() => console.log('genre saved'));
-
-
 
 module.exports = Genres;

@@ -1,23 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const middleware = require('../middlewares')
+const { customerValidation } = require('../middlewares')
 // const Genres = require('../models/genres')
 const Customers = require('../models/customers')
 
-// R
+
 router.get('/', async (req, res) => {
    try {
       const allCustomers = await Customers.find().sort('name');
-      if (!allCustomers || allCustomers.length < 1) return res.status(404).send("No customers available");
+      if (!allCustomers || allCustomers.length < 1) return res.status(404)
+         .send("No customers available");
       res.status(201).send(allCustomers);
 
    } catch (error) {
       console.error(error);
    }
 })
-// C
+
 router.post('/', async (req, res) => {
-   const { error, value } = middleware.customerValidation(req.body)
+   const { error, value } = customerValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
    try {
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
 
 
 router.put('/:id', async (req, res) => {
-   const { error, value } = middleware.customerValidation(req.body)
+   const { error, value } = customerValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
    const id = req.params.id;

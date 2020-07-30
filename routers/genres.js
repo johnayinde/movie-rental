@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const middleware = require('../middlewares')
+const { joiValidation } = require('../middlewares')
 const Genres = require('../models/genres')
 
-// R
+
 router.get('/', async (req, res) => {
    try {
       const allGenres = await Genres.find().sort('name');
@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
    }
 
 })
-// C
+
 router.post('/', async (req, res) => {
-   const { error, value } = middleware.joiValidation(req.body)
+   const { error, value } = joiValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
    try {
@@ -35,9 +35,9 @@ router.post('/', async (req, res) => {
 
 });
 
-// U
+
 router.put('/:id', async (req, res) => {
-   const { error, value } = middleware.joiValidation(req.body)
+   const { error, value } = joiValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
    const id = req.params.id;

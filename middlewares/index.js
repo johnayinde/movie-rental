@@ -17,13 +17,14 @@ middleware.customerValidation = (customer) => {
    return joiSchema.validate(customer);
 
 }
-middleware.movieValidation = (customer) => {
+middleware.movieValidation = (movie) => {
    const joiSchema = Joi.object().keys({
-      name: Joi.string().min(5).max(50).required(),
-      phone: Joi.string().min(5).max(50).required(),
-      isGold: Joi.boolean()
+      title: Joi.string().min(2).max(50).required(),
+      numberInStock: Joi.number().min(0).required(),
+      dailyRentalRate: Joi.number().min(0).required(),
+      genreId: Joi.string().required(),
    })
-   return joiSchema.validate(customer);
+   return joiSchema.validate(movie);
 
 }
 module.exports = middleware

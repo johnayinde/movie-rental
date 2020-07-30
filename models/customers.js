@@ -17,11 +17,5 @@ const customerSchema = new Schema({
 
 const Customers = mongoose.model('Customer', customerSchema);
 
-// const genre = new Genres({
-//    name: "action"
-// })
-// genre.save().then(() => console.log('genre saved'));
-
-
 
 module.exports = Customers;
