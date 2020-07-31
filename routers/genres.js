@@ -26,10 +26,10 @@ router.post('/', async (req, res) => {
       })
       if (!genre) return res.status(404).send("no genre to save");
 
-      const newGenre = await genre.save();
-      res.status(200).send(newGenre)
+      await genre.save();
+      res.status(200).send(genre)
    } catch (error) {
-      console.error('ERROR', error);
+      console.error(error);
 
    }
 

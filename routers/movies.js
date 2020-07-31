@@ -30,8 +30,9 @@ router.post('/', async (req, res) => {
          genre: genreId,
       })
       if (!movie) return res.status(404).send("no movie with such ID found");
-      const newMovie = await movie.save();
-      res.status(200).send(newMovie);
+      await movie.save();
+
+      res.status(200).send(movie);
 
    } catch (error) {
       console.error('ERROR', error);

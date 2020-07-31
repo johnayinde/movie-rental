@@ -25,12 +25,13 @@ router.post('/', async (req, res) => {
       const customer = new Customers({
          name: req.body.name,
          phone: req.body.phone,
-         isGold: req.body.isGold
+         isGold: req.body.isGold,
       })
       if (!customer) return res.status(404).send("no customer to save");
 
-      const newCustomer = await customer.save();
-      res.status(200).send(newCustomer)
+      await customer.save();
+      res.status(200).send(customer)
+
    } catch (error) {
       console.error('ERROR', error);
    }

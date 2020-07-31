@@ -12,7 +12,13 @@ const customerSchema = new Schema({
       type: Boolean,
       default: false
    },
-   phone: Number
+   phone: {
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 50
+
+   }
 });
 
 const Customers = mongoose.model('Customer', customerSchema);
