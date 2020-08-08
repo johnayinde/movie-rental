@@ -1,28 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const { rentalValidation } = require('../middlewares');
-
+const { rentalValidation } = require('../validation');
+const auth = require('../middleware/auth')
+const admin = require('../middleware/admin')
+const Fawn = require('fawn')
+const mongoose = require('mongoose')
 const Movies = require('../models/movies');
 const Rentals = require('../models/rental');
 const Customer = require('../models/customers')
+
+Fawn.init(mongoose)
 
 router.get('/', async (req, res) => {
    try {
       const rentals = await Rentals.find().sort('dateOut');
       if (!rentals || rentals.length < 1) return res.status(404).send("No rental available");
-      res.status(201).send(movies);
+      res.status(201).send(rentals);
 
    } catch (error) {
       console.error(error);
    }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
    const { error, value } = rentalValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
    try {
-      const movie = await Movies.findById(req.body.movieId);
+      const movie = await Movies.findById(req.body.movieId).select('-genre -numberInStock');
       if (!movie) return res.status(500).send("Invalid Movie");
 
       const customer = await Customer.findById(req.body.customerId);
@@ -33,14 +38,22 @@ router.post('/', async (req, res) => {
          movie: movie,
          customer: customer,
       })
-      await rental.save();
-      movie.numberInStock--;
-      movie.save();
+      // await rental.save();
+      // movie.numberInStock--;
+      // movie.save();
+
+      new Fawn.Task()
+         .save('rentals', rental)
+         .update('movies', { _id: movie._id }, { $inc: { numberInStock: -1 } })
+         .run()
+
 
       res.status(200).send(rental);
 
    } catch (error) {
-      console.error( error);
+      res.status(500).send("Something failed");
+
+      console.error(error);
    }
 
 });

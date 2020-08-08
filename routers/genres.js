@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { joiValidation } = require('../middlewares')
-const Genres = require('../models/genres')
+const { joiValidation } = require('../validation')
+const Genres = require('../models/genres');
+const auth = require('../middleware/auth')
+const admin = require('../middleware/admin')
 
 
 router.get('/', async (req, res) => {
@@ -11,12 +13,12 @@ router.get('/', async (req, res) => {
       res.status(201).send(allGenres);
 
    } catch (error) {
-      console.error('ERROR', error);
+      next(error);
    }
 
 })
 
-router.post('/', async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
    const { error, value } = joiValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
@@ -36,7 +38,7 @@ router.post('/', async (req, res) => {
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', [auth, admin], async (req, res) => {
    const { error, value } = joiValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
@@ -64,7 +66,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
    const id = req.params.id;
    try {
       const deleteGenre = await Genres.findByIdAndDelete(id);

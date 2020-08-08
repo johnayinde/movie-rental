@@ -1,6 +1,7 @@
 const middleware = {}
 const Joi = require('@hapi/joi');
 
+
 middleware.joiValidation = (genre) => {
    const joiSchema = Joi.object().keys({
       name: Joi.string().min(3).required()
@@ -21,14 +22,14 @@ middleware.movieValidation = (movie) => {
       title: Joi.string().min(2).max(50).required(),
       numberInStock: Joi.number().min(0).required(),
       dailyRentalRate: Joi.number().min(0).required(),
-      genreId: Joi.string().required(),
+      genreId: Joi.objectId().required(),
    })
    return joiSchema.validate(movie);
 }
 middleware.rentalValidation = (rental) => {
    const joiSchema = Joi.object().keys({
-      movieId: Joi.string().required(),
-      customerId: Joi.string().required(),
+      movieId: Joi.objectId().required(),
+      customerId: Joi.objectId().required(),
    })
    return joiSchema.validate(rental);
 }
@@ -40,4 +41,12 @@ middleware.userValidation = (user) => {
    })
    return joiSchema.validate(user);
 }
+middleware.userAuth = (req) => {
+   const joiSchema = Joi.object().keys({
+      email: Joi.string().max(255).email().required(),
+      password: Joi.string().min(5).max(255).required(),
+   })
+   return joiSchema.validate(req);
+}
+
 module.exports = middleware
