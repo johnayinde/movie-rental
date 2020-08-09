@@ -1,3 +1,4 @@
+require('express-async-errors')
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi); // Validating objectID's
 
@@ -6,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const error = require('./middleware/error')
 
-
+require('dotenv').config()
 require('./startup/routes')(app)
 require('./startup/db')()
 
@@ -15,8 +16,7 @@ app.get('/', (req, res) => {
    res.send("a simple Movie rental API");
 })
 
-app.use(error);
-
+require('./middleware/error')(app)
 
 
 app.listen(port, () => console.log(`app started at ${port}`));

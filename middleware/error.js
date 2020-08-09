@@ -1,3 +1,19 @@
-module.exports = function (err, req, res, next) {
-   res.status(500).send('Something failed!')
+module.exports = function (app) {
+   app.use((req, res, next) => {
+      const error = new Error('Not Found');
+      error.status = 404;
+      next(error);
+
+   })
+   app.use((error, req, res, next) => {
+      res.status(error.status || 500);
+
+      res.json({
+         error: {
+            status: error.messtatussage || 500,
+            message: 'Internal Server Error' || error.message,
+         }
+      })
+   })
+
 }
