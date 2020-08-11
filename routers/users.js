@@ -7,6 +7,7 @@ const _ = require('lodash')
 const auth = require('../middleware/auth');
 
 router.post('/', async (req, res) => {
+
    const { error, value } = userValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 

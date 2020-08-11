@@ -1,15 +1,12 @@
-require('express-async-errors')
-const Joi = require('@hapi/joi');
-Joi.objectId = require('joi-objectid')(Joi); // Validating objectID's
-
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const error = require('./middleware/error')
 
 require('dotenv').config()
-require('./startup/routes')(app)
+require('./startup/logger')()
 require('./startup/db')()
+require('./startup/validation')()
+require('./startup/routes')(app)
 
 
 app.get('/', (req, res) => {

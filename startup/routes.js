@@ -18,4 +18,5 @@ module.exports = function routes(app) {
    app.use('/api/rental', rental);
    app.use('/api/users', users);
    app.use('/api/auth', auth);
+   
 }
