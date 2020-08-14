@@ -3,16 +3,15 @@ const router = express.Router();
 const { joiValidation } = require('../validation')
 const Genres = require('../models/genres');
 const auth = require('../middleware/auth')
-const admin = require('../middleware/admin')
+const admin = require('../middleware/admin');
+const validateId = require('../middleware/validateId');
+const mongoose = require('mongoose');
 
 
 router.get('/', async (req, res, next) => {
    const allGenres = await Genres.find().sort('name');
    if (!allGenres || allGenres.length < 1) return res.status(404).send("empty genres");
    res.status(201).send(allGenres);
-
-
-
 })
 
 router.post('/', [auth, admin], async (req, res) => {
@@ -41,7 +40,8 @@ router.put('/:id', [auth, admin], async (req, res) => {
 
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateId, async (req, res) => {
+
    const id = req.params.id;
    const genre = await Genres.findById(id);
    if (!genre) return res.status(404).send("no genre for the ID");

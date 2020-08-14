@@ -1,14 +1,7 @@
-const express = require('express');
-const app = express();
+const app = require('./app')
 const port = process.env.PORT || 3000;
 
-require('dotenv').config()
-require('./startup/logger')()
-require('./startup/db')()
-require('./startup/validation')()
-require('./startup/routes')(app)
-
-
+console.log(process.env.SECRET_KEY)
 app.get('/', (req, res) => {
    res.send("a simple Movie rental API");
 })
