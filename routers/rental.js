@@ -22,11 +22,11 @@ router.post('/', auth, async (req, res) => {
    const { error, value } = rentalValidation(req.body)
    if (error) return res.status(404).send(error.details[0].message);
 
-   const movie = await Movies.findById(req.body.movieId).select('-genre -numberInStock');
-   if (!movie) return res.status(500).send("Invalid Movie");
+   const movie = await Movies.findById(req.body.movieId).select('-genre numberInStock');
+   if (!movie) return res.status(400).send("Invalid Movie");
 
    const customer = await Customer.findById(req.body.customerId);
-   if (!customer) return res.status(500).send("Invalid Customer");
+   if (!customer) return res.status(400).send("Invalid Customer");
 
    if (movie.numberInStock === 0) return res.status(400).send("Movie not in stock")
    const rental = new Rentals({

@@ -33,6 +33,14 @@ middleware.rentalValidation = (rental) => {
    })
    return joiSchema.validate(rental);
 }
+
+middleware.validateReturn = (req) => {
+   const joiSchema = Joi.object().keys({
+      movieId: Joi.objectId().required(),
+      customerId: Joi.objectId().required(),
+   })
+   return joiSchema.validate(req);
+}
 middleware.userValidation = (user) => {
    const joiSchema = Joi.object().keys({
       name: Joi.string().min(5).max(50).required(),

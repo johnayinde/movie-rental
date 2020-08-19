@@ -5,7 +5,6 @@ const Genres = require('../models/genres');
 const auth = require('../middleware/auth')
 const admin = require('../middleware/admin');
 const validateId = require('../middleware/validateId');
-const mongoose = require('mongoose');
 
 
 router.get('/', async (req, res, next) => {

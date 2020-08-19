@@ -24,8 +24,32 @@ const rentalSchema = new Schema({
    }
 });
 
+
 const rental = mongoose.model('Rental', rentalSchema);
 
+
+// let customerId = mongoose.Types.ObjectId();
+// let movieId = mongoose.Types.ObjectId();
+// let genreId = mongoose.Types.ObjectId();
+
+// (async () => {
+
+//    const rentals = new rental({
+//       customer: {
+//          _id: customerId,
+//          name: '12345',
+//          phone: '123456'
+//       },
+//       movie: {
+//          _id: movieId,
+//          title: '12345',
+//          dailyRentalRate: 2,
+//          movieInStock: 10,
+
+//       }
+//    })
+//    await rentals.populate('movie').save((e, p) => { console.log("saved"); })
+// })()
 
 
 module.exports = rental;
